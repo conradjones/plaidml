@@ -216,30 +216,37 @@ struct plaidml_device_enumerator {
 plaidml_device_enumerator* _plaidml_alloc_device_enumerator(
     vai_ctx* ctx, const char* configuration, const std::string& config_source,
     void (*callback)(void* arg, plaidml_device_enumerator* device_enumerator), void* arg) {
+  
+  std::cout << "_plaidml_alloc_device_enumerator:1\n";
   if (!callback) {
     vertexai::Sync<plaidml_device_enumerator*> sync;
     _plaidml_alloc_device_enumerator(ctx, configuration, config_source, sync.callback(), sync.arg());
     return sync.WaitForResult();
   }
 
+  std::cout << "_plaidml_alloc_device_enumerator:2\n";
   if (!ctx) {
     vertexai::SetLastStatus(VAI_STATUS_CANCELLED, status_strings::kCancelled);
     callback(arg, nullptr);
     return nullptr;
   }
 
+  std::cout << "_plaidml_alloc_device_enumerator:3\n";
   plaidml_device_enumerator* result = nullptr;
 
+  std::cout << "_plaidml_alloc_device_enumerator:4\n";
   std::set<std::string> device_ids;
   std::stringstream devids(vertexai::env::Get(PLAIDML_DEVICE_IDS));
   std::copy(std::istream_iterator<std::string>(devids), std::istream_iterator<std::string>(),
             std::inserter(device_ids, device_ids.end()));
 
+  std::cout << "_plaidml_alloc_device_enumerator:5\n";
   try {
     context::Activity activity{ctx->activity.ctx(), "vertexai::EnumerateDevices"};
     auto enumerator = std::make_unique<plaidml_device_enumerator>();
     enumerator->config_source = config_source;
     plaidml::proto::Config config;
+    std::cout << "_plaidml_alloc_device_enumerator:6\n";
     try {
       config = vertexai::ParseConfig<plaidml::proto::Config>(configuration);
     } catch (...) {
@@ -247,10 +254,12 @@ plaidml_device_enumerator* _plaidml_alloc_device_enumerator(
       callback(arg, nullptr);
       return nullptr;
     }
+    std::cout << "_plaidml_alloc_device_enumerator:7\n";
     enumerator->platform =
         vertexai::AnyFactoryMap<tile::Platform>::Instance()->MakeInstance(activity.ctx(), config.platform());
     tile::proto::ListDevicesRequest req;
     tile::proto::ListDevicesResponse resp;
+    std::cout << "_plaidml_alloc_device_enumerator:8\n";
     enumerator->platform->ListDevices(activity.ctx(), req, &resp);
     for (const auto& dev : resp.devices()) {
       plaidml_devconf devconf = {enumerator->platform, dev};
@@ -260,6 +269,7 @@ plaidml_device_enumerator* _plaidml_alloc_device_enumerator(
       }
       enumerator->devices.emplace_back(devconf);
     }
+    std::cout << "_plaidml_alloc_device_enumerator:9\n";
     for (const auto& dev : resp.unmatched_devices()) {
       plaidml_devconf devconf = {enumerator->platform, dev};
       enumerator->unmatched_devices.emplace_back(devconf);
@@ -270,6 +280,7 @@ plaidml_device_enumerator* _plaidml_alloc_device_enumerator(
   }
 
   // N.B. We're careful to invoke the callback exactly once.
+    std::cout << "_plaidml_alloc_device_enumerator:10\n";
   callback(arg, result);
 
   return nullptr;
