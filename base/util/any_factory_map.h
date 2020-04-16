@@ -83,6 +83,13 @@ std::unique_ptr<Product> AnyFactoryMap<Product>::MakeInstance(const context::Con
 template <typename Product>
 std::unique_ptr<Product> AnyFactoryMap<Product>::MakeInstanceIfSupported(const context::Context& ctx,
                                                                          const google::protobuf::Any& config) const {
+
+
+  std::cout << "-----------------------\n";                                                                           
+  for (auto & f : factories_) {
+    std::cout << f.first << "\n";
+  }
+  std::cout << "-----------------------\n";                                                                           
   auto it = factories_.find(config.type_url());
   std::cout << "MakeInstanceIfSupported:" << config.type_url() << "\n";
   if (it == factories_.end()) {
