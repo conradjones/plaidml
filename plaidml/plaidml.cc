@@ -274,8 +274,10 @@ plaidml_device_enumerator* _plaidml_alloc_device_enumerator(
       plaidml_devconf devconf = {enumerator->platform, dev};
       enumerator->unmatched_devices.emplace_back(devconf);
     }
+    std::cout << "result = enumerator.release();\n";
     result = enumerator.release();
   } catch (...) {
+    std::cout << "vertexai::SetLastException(std::current_exception());\n";
     vertexai::SetLastException(std::current_exception());
   }
 
