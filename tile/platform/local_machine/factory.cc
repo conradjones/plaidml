@@ -17,6 +17,9 @@ std::unique_ptr<tile::Platform> PlatformFactory::MakeTypedInstance(const context
 
 [[gnu::unused]] char reg = []() -> char {
   AnyFactoryMap<tile::Platform>::Instance()->Register(std::make_unique<PlatformFactory>());
+
+  std::cout << "REGISTER<<\n";
+
   return 0;
 }();
 
