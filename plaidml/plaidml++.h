@@ -791,22 +791,29 @@ class device_config {
 
 std::vector<device_config> _enumerate_devices(const std::shared_ptr<ctx>& ctx,
                                               std::shared_ptr<plaidml_device_enumerator> dev_enum) {
+  std::cout << "_enumerate_devices:1\n";
   std::vector<device_config> out;
   size_t i = 0;
+  std::cout << "_enumerate_devices:2\n";
   while (true) {
     plaidml_devconf* conf = plaidml_get_devconf(ctx->get_ctx(), dev_enum.get(), i);
     if (conf == NULL) break;
     i++;
     out.push_back(device_config(ctx, dev_enum, conf));
   }
+  std::cout << "_enumerate_devices:3\n";
   vai_clear_status();  // Since we always walk off the list, clear errors
   return out;
 }
 
 std::vector<device_config> enumerate_devices(const std::shared_ptr<ctx>& ctx) {
+  std::cout << "enumerate_devices:1\n";
   std::shared_ptr<plaidml_device_enumerator> dev_enum(plaidml_alloc_device_enumerator(ctx->get_ctx(), NULL, NULL),
                                                       plaidml_free_device_enumerator);
+
+  std::cout << "enumerate_devices:2\n";
   vai_exception::check_and_throw(dev_enum);
+  std::cout << "enumerate_devices:3\n";
   return _enumerate_devices(ctx, dev_enum);
 }
 
