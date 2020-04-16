@@ -84,6 +84,7 @@ template <typename Product>
 std::unique_ptr<Product> AnyFactoryMap<Product>::MakeInstanceIfSupported(const context::Context& ctx,
                                                                          const google::protobuf::Any& config) const {
   auto it = factories_.find(config.type_url());
+  std::cout << "MakeInstanceIfSupported:" << config.type_url() << "\n";
   if (it == factories_.end()) {
     return std::unique_ptr<Product>();
   }

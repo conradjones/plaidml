@@ -276,9 +276,9 @@ plaidml_device_enumerator* _plaidml_alloc_device_enumerator(
     }
     std::cout << "result = enumerator.release();\n";
     result = enumerator.release();
-  } catch (...) {
-    std::cout << "vertexai::SetLastException(std::current_exception());\n";
-    vertexai::SetLastException(std::current_exception());
+  } catch (const std::exception& e) {
+    std::cout << "vertexai::SetLastException(std::current_exception()):" << e.what() << "\n";
+    vertexai::SetLastException(e);
   }
 
   // N.B. We're careful to invoke the callback exactly once.
