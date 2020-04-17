@@ -14,7 +14,7 @@ namespace config {
 
 namespace {
 
-const char* kPlaidMLExperimental = "PLAIDML_EXPERIMENTAL";
+const char* kPlaidMLExperimental = "0"; //"PLAIDML_EXPERIMENTAL";
 const char* kPlaidMLDefaultConfig = "PLAIDML_DEFAULT_CONFIG";
 const char* kPlaidMLDefaultConfigBasename = "config.json";
 const char* kPlaidMLExperimentalConfig = "PLAIDML_EXPERIMENTAL_CONFIG";
