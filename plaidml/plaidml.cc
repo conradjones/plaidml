@@ -291,6 +291,8 @@ plaidml_device_enumerator* _plaidml_alloc_device_enumerator(
 extern "C" plaidml_device_enumerator* plaidml_alloc_device_enumerator(
     vai_ctx* ctx, void (*callback)(void* arg, plaidml_device_enumerator* device_enumerator), void* arg) {
   auto cfg = plaidml::config::Get();
+  std::cout << "plaidml_alloc_device_enumerator\n";
+  std::cout << "cfg.source=" << cfg.source << "\n";
   return _plaidml_alloc_device_enumerator(ctx, cfg.data.c_str(), cfg.source, callback, arg);
 }
 
