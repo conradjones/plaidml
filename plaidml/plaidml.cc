@@ -249,7 +249,8 @@ plaidml_device_enumerator* _plaidml_alloc_device_enumerator(
     std::cout << "_plaidml_alloc_device_enumerator:6\n";
     try {
       config = vertexai::ParseConfig<plaidml::proto::Config>(configuration);
-    } catch (...) {
+    } catch (const std::exception& e) {
+      std::cout << "vertexai::SetLastException(std::current_exception()):" << e.what() << "\n";
       vertexai::SetLastException(std::current_exception());
       callback(arg, nullptr);
       return nullptr;
