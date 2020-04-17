@@ -23,9 +23,13 @@ void ParseConfig(const std::string& data, google::protobuf::Message* config) {
   // Try JSON
   std::unique_ptr<gpu::TypeResolver> resolver{
       gpu::NewTypeResolverForDescriptorPool(kTypeVertexAI, gp::DescriptorPool::generated_pool())};
-  std::string bin;
+   std::cout << "resolver\n";
+
+ std::string bin;
   auto status = gpu::JsonToBinaryString(
       resolver.get(), std::string(kTypeVertexAIPrefix) + config->GetDescriptor()->full_name(), data, &bin);
+  std::cout << "gpu::JsonToBinaryString\n";
+  std::cout << "ParseFromString\n";
   if (status.ok() && config->ParseFromString(bin)) {
     return;
   }

@@ -42,13 +42,13 @@ boost::filesystem::path GetConfigFilename(const char* env_var, const char* basen
 
 Config Get() {
   Config config;
-  std::string exp = vertexai::env::Get(kPlaidMLExperimental);
+  //std::string exp = vertexai::env::Get(kPlaidMLExperimental);
   boost::filesystem::path source;
-  if (!exp.empty() && exp != "0") {
-    source = GetConfigFilename(kPlaidMLExperimentalConfig, kPlaidMLExperimentalConfigBasename);
-  } else {
+  //if (!exp.empty() && exp != "0") {
+  //  source = GetConfigFilename(kPlaidMLExperimentalConfig, kPlaidMLExperimentalConfigBasename);
+  //} else {
     source = GetConfigFilename(kPlaidMLDefaultConfig, kPlaidMLDefaultConfigBasename);
-  }
+  //}
   config.source = source.string();
   std::cout << "config.source=" << config.source << "\n";
   std::ifstream cfs(source.native());
