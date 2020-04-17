@@ -50,6 +50,7 @@ Config Get() {
     source = GetConfigFilename(kPlaidMLDefaultConfig, kPlaidMLDefaultConfigBasename);
   }
   config.source = source.string();
+  std::cout << "config.source=" << config.source << "\n";
   std::ifstream cfs(source.native());
   config.data.assign(std::istreambuf_iterator<char>(cfs), std::istreambuf_iterator<char>());
 
